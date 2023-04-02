@@ -170,10 +170,6 @@ export class ClientsComponent {
         return index;
     }
 
-    createId(): number {
-    return Math.random();
-    }
-
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }

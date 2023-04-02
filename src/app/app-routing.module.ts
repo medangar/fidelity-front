@@ -35,6 +35,8 @@ import { InscriptionComponent } from './component/inscription/inscription.compon
 import { ClientsComponent } from './component/client/clients/clients.component';
 import { CartesComponent } from './component/cartes/cartes.component';
 import { HistoTransactionComponent } from './component/histo-transaction/histo-transaction.component';
+import { ProduitsComponent } from './component/produits/produits.component';
+import { OffresComponent } from './component/offres/offres.component';
 
 
 @NgModule({
@@ -68,7 +70,12 @@ import { HistoTransactionComponent } from './component/histo-transaction/histo-t
                     {path: 'pages/help', component: AppHelpComponent},
                     {path: 'pages/empty', component: EmptyDemoComponent},
                     {path: 'documentation', component: DocumentationComponent},
-                    {path: 'blocks', component: BlocksComponent}
+                    {path: 'blocks', component: BlocksComponent},
+                    {path: 'clients', component: ClientsComponent},
+                    {path: 'cartes', component: CartesComponent},
+                    {path: 'transactions', component: HistoTransactionComponent},
+                    {path: 'produits', component: ProduitsComponent},
+                    {path: 'offres', component: OffresComponent}
                 ]
             },
             {path: 'error', component: AppErrorComponent},
@@ -76,10 +83,7 @@ import { HistoTransactionComponent } from './component/histo-transaction/histo-t
             {path: 'notfound', component: AppNotfoundComponent},
             {path: 'login', component: ConnexionComponent},
             {path: 'inscription', component: InscriptionComponent},
-            {path: 'clients', component: ClientsComponent},
-            {path: 'cartes', component: CartesComponent},
-            {path: 'transactions', component: HistoTransactionComponent},
-            {path: '**', redirectTo: '/notfound'},
+            {path: '**', redirectTo: '/notfound'}
         ], {scrollPositionRestoration: 'enabled'})
     ],
     exports: [RouterModule]

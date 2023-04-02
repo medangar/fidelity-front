@@ -152,6 +152,8 @@ import { InscriptionComponent } from './component/inscription/inscription.compon
 import { ClientsComponent } from './component/client/clients/clients.component';
 import { CartesComponent } from './component/cartes/cartes.component';
 import { HistoTransactionComponent } from './component/histo-transaction/histo-transaction.component';
+import { ProduitsComponent } from './component/produits/produits.component';
+import { OffresComponent } from './component/offres/offres.component';
 
 @NgModule({
     imports: [
@@ -291,7 +293,9 @@ import { HistoTransactionComponent } from './component/histo-transaction/histo-t
         InscriptionComponent,
         ClientsComponent,
         CartesComponent,
-        HistoTransactionComponent
+        HistoTransactionComponent,
+        OffresComponent,
+        ProduitsComponent
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},
