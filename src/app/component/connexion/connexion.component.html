@@ -1,0 +1,54 @@
+<form [formGroup]="form" (ngSubmit)="authentication()" >
+<div class="login-body">
+    <div class="login-topbar">
+        <a href="#" class="logo">
+            <img src="assets/layout/images/logo.png" alt="california-layout"/>
+        </a>
+    </div>
+
+    <img class="login-image" src="assets/layout/images/image-access.png" alt="california-layout" />
+
+    <div class="login-panel p-fluid">
+        <div class="grid">
+            <div class="col-12 login-icon-container">
+                <img class="login-icon" src="assets/layout/images/icon-login.png" alt="california-layout" />
+            </div>
+            <div class="col-12 lg:col-12 md:col-12 logo-container">
+                <span class="login-summary">Sign in to fidelity</span>
+                <div class="login-detail">
+                    <span>Welcome, please use the form to sign-in network.</span>
+                </div>
+            </div>
+            <div class="col-12 lg:col-12 md:col-12">
+                <div class="input-wrapper">
+                    <label>E-mail address</label>
+                    <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+                        <h4> Email est requis</h4>
+                       </div>
+                    <input type="email" formControlName="email" autocomplete="off" placeholder="E-mail" pInputText>
+                </div>
+            </div>
+            <div class="col-12 lg:col-12 md:col-12">
+                <div class="input-wrapper">
+                    <label>Password</label>
+                    <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+                        <h4>Mot de passe est requis</h4>
+                      </div>
+                    <input type="password" formControlName="password" autocomplete="off" placeholder="Password" pInputText>
+                </div>
+                <h4 *ngIf="badCredentials">Email ou Password incorrect</h4>
+            </div>
+            <div class="col-12 lg:col-12 md:col-12 chkbox-container">
+                <div class="remember-me">
+                    <input type="checkbox" class="p-chkbox p-chkbox-box">
+                    <span>Remember me</span>
+                    <a href="#">Reset Password</a>
+                </div>
+            </div>
+            <div class="col-12 lg:col-12 md:col-12 button-container">
+                <button type="submit" [disabled]="!form.valid" pButton label="Sign In"></button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>

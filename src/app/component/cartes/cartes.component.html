@@ -1,0 +1,142 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedCartes()" [disabled]="!selectedCartes || !selectedCartes.length"></button>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="cartes" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','roles']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedCartes" selectionMode="multiple" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Manage Cards</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="carteId">CarteId <p-sortIcon field="carteId"></p-sortIcon></th>
+                        <th pSortableColumn="dateVvalidite">DateValidite <p-sortIcon field="dateValidite"></p-sortIcon></th>
+                        <th pSortableColumn="nbPoints">NbPoints <p-sortIcon field="nbPoints"></p-sortIcon></th>
+                        <th pSortableColumn="derniereVisite">DerniereVisite <p-sortIcon field="derniereVisite"></p-sortIcon></th>
+                        <th pSortableColumn="status">Statuts <p-sortIcon field="status"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-carte>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="carte"></p-tableCheckbox>
+                        </td>
+                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">CarteId</span>
+                            {{carte.carteId }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">DateValidite</span>
+                            {{carte.dateValidite}}
+                        </td>
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">NbPoints</span>
+                            {{carte.nbPoints }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">DerniereVisite</span>
+                            {{carte.derniereVisite}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Role</span>
+                            <span [class]="'carte-badge statut-' + (carte.statut ? carte.statut.toLowerCase() : '')">{{carte.statut}}</span>
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editCarte(cartet)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteCarte(carte)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="carteDialog" [style]="{width: '450px'}" header="carte Details" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="carteId">CarteId</label>
+                    <input type="text" pInputText id="carteId" [(ngModel)]="carte.carteId" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !carte.carteId}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !carte.carteId">identifiant is required.</small>
+                </div>
+                <div class="field">
+                    <label for="dateValidite">DateValidite</label>
+                    <input type="text" pInputText id="dateValidite" [(ngModel)]="carte.dateValidite" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !carte.dateValidite}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !carte.dateValidite">Validity date is required.</small>
+                </div>
+                <div class="field">
+                    <label for="nbPoints">NbPoints</label>
+                    <input type="text" pInputText id="nbPoints" [(ngModel)]="carte.nbPoints" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !carte.nbPoints}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !carte.nbPoints">Score is required.</small>
+                </div>
+                <div class="field">
+                    <label for="derniereVisite">DerniereVisite</label>
+                    <input type="text" pInputText id="derniereVisite" [(ngModel)]="carte.derniereVisite" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !carte.derniereVisite}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !carte.derniereVisite">Last visit is required.</small>
+                </div>
+
+                <div class="field">
+                    <label for="statut">statut</label>
+                    <p-dropdown [(ngModel)]="carte.statut" inputId="statut" optionValue="label" [options]="Statuts" placeholder="Select">
+                        <ng-template pTemplate="selectedItem">
+                            <span *ngIf="carte && carte.statut" [class]="'carte-badge status-' + carte.statut.toString().toLowerCase()">{{carte.statut}}</span>
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCarte()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteCarteDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="carte">Are you sure you want to delete <b>{{carte.carteId}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteCartetDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteCartesDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>Are you sure you want to delete selected cards?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteCartesDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>
+
+

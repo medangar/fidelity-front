@@ -1,0 +1,141 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedHistoTransactions()" [disabled]="!selectedHistoTransactions || !selectedHistoTransactions.length"></button>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="histoTransactions" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','roles']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedHistoTransactions" selectionMode="multiple" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Manage HistoTransactions</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon></th>
+                        <th pSortableColumn="soldeInit">SoldeInit <p-sortIcon field="soldeInit"></p-sortIcon></th>
+                        <th pSortableColumn="dateTransaction">DateTransaction <p-sortIcon field="dateTransaction"></p-sortIcon></th>
+                        <th pSortableColumn="soldeFnl">SoldeFnl <p-sortIcon field="soldeFnl"></p-sortIcon></th>
+                        <th pSortableColumn="typeTransaction">TypeTransaction <p-sortIcon field="typeTransaction"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-histoTransactions>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="histoTransactions"></p-tableCheckbox>
+                        </td>
+                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Identifiant</span>
+                            {{histoTransaction.id }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">SoldeInit</span>
+                            {{HistoTransaction.soldeInit}}
+                        </td>
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">SoldeFnl</span>
+                            {{HistoTransaction.soldeFnl }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">DateTransaction</span>
+                            {{HistoTransaction.dateTransaction}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">TypeTransaction</span>
+                            <span [class]="'histoTransaction-badge typeTransaction-' + (histoTransaction.typeTransaction ? histoTransaction.typeTransaction.toLowerCase() : '')">{{histoTransaction.typeTransaction}}</span>
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editHistoTransactiont(histoTransaction)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteHistoTransaction(histoTransaction)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="histoTransactionDialog" [style]="{width: '450px'}" header="histoTransaction Details" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="id">Id</label>
+                    <input type="text" pInputText id="id" [(ngModel)]="histoTransaction.id" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !histoTransaction.id}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !histoTransaction.idt">id is required.</small>
+                </div>
+                <div class="field">
+                    <label for="soldeInit">SoldeInit</label>
+                    <input type="text" pInputText id="soldeInit" [(ngModel)]="histoTransaction.soldeInit" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !histoTransaction.soldeInit}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !histoTransaction.soldeInit">SoldeInit is required.</small>
+                </div>
+                <div class="field">
+                    <label for="soldeFnl">SoldeFnl</label>
+                    <input type="text" pInputText id="soldeFnl" [(ngModel)]="histoTransaction.soldeFnl" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !histoTransaction.soldeFnl}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !histoTransaction.soldeFnl">SoldeFnl is required.</small>
+                </div>
+                <div class="field">
+                    <label for="dateTransaction">DateTransaction</label>
+                    <input type="text" pInputText id="dateTransaction" [(ngModel)]="histoTransaction.dateTransaction" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !histoTransaction.dateTransaction}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !histoTransaction.dateTransaction">DateTransaction is required.</small>
+                </div>
+
+                <div class="field">
+                    <label for="typeTransaction">TypeTransaction</label>
+                    <p-dropdown [(ngModel)]="histoTransaction.typeTransaction" inputId="typeTransaction" optionValue="label" [options]="roles" placeholder="Select">
+                        <ng-template pTemplate="selectedItem">
+                            <span *ngIf="histoTransaction && histoTransaction.typeTransaction" [class]="'histoTransaction-badge status-' + histoTransaction.typeTransaction.toString().toLowerCase()">{{histoTransaction.typeTransaction}}</span>
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveHistoTransaction()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteHistoTransactionDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="histoTransaction">Are you sure you want to delete <b>{{histoTransaction.id}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteHistoTransactionDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteHistoTransactionsDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>Are you sure you want to delete selected histoTransactions?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteHistoTransactionsDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>
+

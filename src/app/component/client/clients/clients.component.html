@@ -1,0 +1,153 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedClients()" [disabled]="!selectedClients || !selectedClients.length"></button>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="clients" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','roles']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedClients" selectionMode="multiple" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Manage Clients</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="identifiant">Identifiant <p-sortIcon field="identifiant"></p-sortIcon></th>
+                        <th pSortableColumn="nom">Nom <p-sortIcon field="nom"></p-sortIcon></th>
+                        <th pSortableColumn="prenom">Prenom <p-sortIcon field="prenom"></p-sortIcon></th>
+                        <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
+                        <th pSortableColumn="role">Role <p-sortIcon field="role"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-client>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="client"></p-tableCheckbox>
+                        </td>
+                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Identifiant</span>
+                            {{client.identifiant }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Nom</span>
+                            {{client.nom}}
+                        </td>
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">Prenom</span>
+                            {{client.prenom }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Email</span>
+                            {{client.email}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Role</span>
+                            <span [class]="'client-badge role-' + (client.role ? client.role.toLowerCase() : '')">{{client.role}}</span>
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editClient(client)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteClient(client)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="clientDialog" [style]="{width: '450px'}" header="client Details" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="identifiant">Identifiant</label>
+                    <input type="text" pInputText id="identifiant" [(ngModel)]="client.identifiant" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.identifiant}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !client.identifiant">identifiant is required.</small>
+                </div>
+                <div class="field">
+                    <label for="nom">Nom</label>
+                    <input type="text" pInputText id="nom" [(ngModel)]="client.nom" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.nom}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !client.nom">LastName is required.</small>
+                </div>
+                <div class="field">
+                    <label for="prenom">Prenom</label>
+                    <input type="text" pInputText id="prenom" [(ngModel)]="client.prenom" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.prenom}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !client.prenom">firstName is required.</small>
+                </div>
+                <div class="field">
+                    <label for="email">E-mail</label>
+                    <input type="text" pInputText id="email" [(ngModel)]="client.email" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.email}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !client.email">Email is required.</small>
+                </div>
+
+                <div class="field">
+                    <label for="role">Role</label>
+                    <p-dropdown [(ngModel)]="client.role" inputId="role" optionValue="label" [options]="roles" placeholder="Select">
+                        <ng-template pTemplate="selectedItem">
+                            <span *ngIf="client && client.role" [class]="'client-badge status-' + client.role.toString().toLowerCase()">{{client.role}}</span>
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+                
+                <div class="field">
+                    <label for="adresse">Adresse</label>
+                    <input type="text" pInputText id="adresse" [(ngModel)]="client.adresse" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.adresse}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !client.adresse">Adress is required.</small>
+                </div>
+                <div class="field">
+                    <label for="codepostale">Code Postal</label>
+                    <input type="text" pInputText id="codepostale" [(ngModel)]="client.codepostale" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.codepostale}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !client.codepostale">code postale is required.</small>
+                </div>
+
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveClient()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteClientDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="client">Are you sure you want to delete <b>{{client.nom}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteClientDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteClientsDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>Are you sure you want to delete selected clients?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteClientsDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>
+

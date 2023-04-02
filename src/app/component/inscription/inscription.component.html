@@ -1,0 +1,104 @@
+<form  [formGroup]="form" (ngSubmit)="register()">
+<div class="login-body">
+    <div class="login-topbar">
+        <a href="#" class="logo">
+            <img src="assets/layout/images/logo.png" alt="california-layout"/>
+        </a>
+    </div>
+
+    <img class="login-image" src="assets/layout/images/image-access.png" alt="california-layout" />
+
+    <div class="login-panel p-fluid">
+        <div class="grid">
+            <div class="col-12 login-icon-container">
+                <img class="login-icon" src="assets/layout/images/icon-login.png" alt="california-layout" />
+            </div>
+            <div class="col-12 lg:col-12 md:col-12 logo-container">
+                <span class="login-summary">Inscription</span>
+                <div class="login-detail">
+                    <span>Welcome, please use the form to sign-in network.</span>
+                </div>
+            </div>
+            <div class="col-12 lg:col-12 md:col-12">
+                <div class="input-wrapper">
+                    <label>Prénom</label>
+                    <input type="text" autocomplete="off" placeholder="prénom" pInputText formControlName="prenom">
+                    <h4 *ngIf="form.get('prenom')?.invalid && form.get('prenom')?.touched">prenom est requis</h4>
+                </div>
+            </div>
+            <div class="col-12 lg:col-12 md:col-12">
+                <div class="input-wrapper">
+                    <label>Nom</label>
+                    <input type="text" autocomplete="off" placeholder="nom" pInputText formControlName="nom">
+                    <h4 *ngIf="form.get('nom')?.invalid && form.get('nom')?.touched">nom est requis</h4>
+                </div>
+            </div>
+            <div class="col-12 lg:col-12 md:col-12">
+                <div class="input-wrapper">
+                    <label>Adresse</label>
+                    <input type="text" autocomplete="off" placeholder="Adresse" pInputText formControlName="address">
+                    <h4 *ngIf="form.get('address')?.invalid && form.get('address')?.touched">adresse est requis</h4>
+                </div>
+            </div>
+            <div class="col-12 lg:col-12 md:col-12">
+                <div class="input-wrapper">
+                    <label>Code postale</label>
+                    <input type="text" autocomplete="off" placeholder="Code postale" pInputText formControlName="codepostal">
+                    <h4 *ngIf="form.get('codepostal')?.invalid && form.get('codepostal')?.touched">Code postale est requis</h4>
+                </div>
+            </div>
+            <div class="col-12 lg:col-12 md:col-12">
+                <div class="input-wrapper">
+                    <label>Telephone</label>
+                    <input type="text" autocomplete="off" placeholder="Telephone" pInputText formControlName="tel">
+                    <h4 *ngIf="form.get('tel')?.invalid && form.get('tel')?.touched">Telephone est requis</h4>
+                </div>
+            </div>
+            <div class="col-12 lg:col-12 md:col-12">
+                <div class="input-wrapper">
+                    <label>E-mail</label>
+                    <input type="text" autocomplete="off" placeholder="E-mail" pInputText formControlName="email">
+                    <h4 *ngIf="form.get('email')?.invalid && form.get('email')?.touched">Email est requis et doit être valide</h4>
+                    <h4 *ngIf="emailExists">Email existe déjà</h4>
+                </div>
+            </div>
+            <div class="col-12 lg:col-12 md:col-12">
+                <div class="input-wrapper">
+                    <label>Identifiant</label>
+                    <input type="text" autocomplete="off" placeholder="Identifiant" pInputText formControlName="identifiant">
+                    <h4 *ngIf="form.get('email')?.invalid && form.get('email')?.touched">Identifiant est requis</h4>
+                </div>
+            </div>
+            
+            <div class="col-12 lg:col-12 md:col-12">
+                <div class="input-wrapper">
+                    <label>Password</label>
+                    <input type="password" autocomplete="off" placeholder="Password" pInputText formControlName="password">
+                    <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+                        <h4 *ngIf="form.get('password')?.hasError('required')">Mot de passe est requis</h4>
+                        <h4 *ngIf="form.get('password')?.hasError('minlength')">Mot de passe doit avoir au moins 8 caractères</h4>
+                      </div>
+                </div>
+            </div>
+            <div class="col-12 lg:col-12 md:col-12">
+                <div class="input-wrapper">
+                    <label>Confirme Password</label>
+                    <input type="password" autocomplete="off" placeholder="Retapez votre Password" pInputText formControlName="passwordConfirm">
+                    <h4 *ngIf="form.get('passwordConfirm')?.invalid && form.get('passwordConfirm')?.touched">Confirmation de mot de passe est requise</h4>
+                    <h4 *ngIf="form.get('password')?.value !== form.get('passwordConfirm')?.value && form.get('passwordConfirm')?.touched">Les mots de passe ne correspondent pas</h4>
+                </div>
+            </div>
+            <div class="col-12 lg:col-12 md:col-12 chkbox-container">
+                <div class="remember-me">
+                    <input type="checkbox" class="p-chkbox p-chkbox-box">
+                    <span>Remember me</span>
+                    <a href="#">Reset Password</a>
+                </div>
+            </div>
+            <div class="col-12 lg:col-12 md:col-12 button-container">
+                <button type="submit" [disabled]="!form.valid" pButton label="s'inscrire"></button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
