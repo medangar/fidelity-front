@@ -76,14 +76,20 @@
         <p-dialog [(visible)]="carteDialog" [style]="{width: '450px'}" header="carte Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 <div class="field">
-                    <label for="carteId">CarteId</label>
-                    <input type="text" pInputText id="carteId" [(ngModel)]="carte.carteId" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !carte.carteId}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !carte.carteId">identifiant is required.</small>
-                </div>
-                <div class="field">
                     <label for="dateValidite">DateValidite</label>
                     <input type="text" pInputText id="dateValidite" [(ngModel)]="carte.dateValidite" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !carte.dateValidite}"/>
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !carte.dateValidite">Validity date is required.</small>
+                </div>
+                <div class="field">
+                    <label for="statut">statut</label>
+                    <p-dropdown [(ngModel)]="carte.statut" inputId="statut" optionValue="label" [options]="statuts" placeholder="Select">
+                        <ng-template pTemplate="selectedItem">
+                            <span *ngIf="carte && carte.statut" [class]="'carte-badge status-' + carte.statut.toString().toLowerCase()">{{carte.statut}}</span>
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+                        </ng-template>
+                    </p-dropdown>
                 </div>
                 <div class="field">
                     <label for="nbPoints">NbPoints</label>
@@ -94,18 +100,6 @@
                     <label for="derniereVisite">DerniereVisite</label>
                     <input type="text" pInputText id="derniereVisite" [(ngModel)]="carte.derniereVisite" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !carte.derniereVisite}"/>
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !carte.derniereVisite">Last visit is required.</small>
-                </div>
-
-                <div class="field">
-                    <label for="statut">statut</label>
-                    <p-dropdown [(ngModel)]="carte.statut" inputId="statut" optionValue="label" [options]="Statuts" placeholder="Select">
-                        <ng-template pTemplate="selectedItem">
-                            <span *ngIf="carte && carte.statut" [class]="'carte-badge status-' + carte.statut.toString().toLowerCase()">{{carte.statut}}</span>
-                        </ng-template>
-                        <ng-template let-option pTemplate="item">
-                            <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
-                        </ng-template>
-                    </p-dropdown>
                 </div>
             </ng-template>
 

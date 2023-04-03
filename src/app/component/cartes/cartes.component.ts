@@ -28,7 +28,7 @@ export class CartesComponent {
 
     cols: any[];
 
-    roles: any[];
+    statuts: any[];
 
     rowsPerPageOptions = [5, 10, 20];
     statut: { label: string; value: string; }[];
@@ -56,10 +56,9 @@ export class CartesComponent {
           { field: 'statut', header: 'Statut' }
       ];
 
-      this.statut = [
-          { label: 'Admin', value: 'admin' },
-          { label: 'Client', value: 'client' },
-          { label: 'Caissier', value: 'caissier' }
+      this.statuts = [
+          { label: 'Activer', value: 'activer' },
+          { label: 'Desactiver', value: 'desactiver' },
       ];
   }
 

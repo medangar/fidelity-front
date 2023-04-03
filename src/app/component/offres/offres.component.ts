@@ -27,7 +27,7 @@ export class OffresComponent {
 
     cols: any[];
 
-    roles: any[];
+    statut: any[];
 
     rowsPerPageOptions = [5, 10, 20];
 
@@ -49,11 +49,12 @@ export class OffresComponent {
 
         this.cols = [
             { field: 'id', header: 'Id' },
+            { field: 'name', header: 'Name' },
             { field: 'validite', header: 'Validite' },
             { field: 'statut', header: 'statut' },
         ];
 
-        this.roles = [
+        this.statut = [
             { label: 'Active', value: 'active' },
             { label: 'Non', value: 'non' },
         ];
@@ -117,13 +118,15 @@ export class OffresComponent {
 
     saveOffre() {
         this.submitted = true;
-
-        if (this.offre.id) {
+        console.log(this.offre);
+        this.offre.validite = null;
+        
             if (this.offre.id) {
+              console.log('edit');
                 this.offreService.edit(this.offre).subscribe({
                     next: (res) => {
-                        this.offres[this.findClientById(this.offre.id)] = this.offre;
-                        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'offert Updated', life: 3000 });
+                        this.offres[this.findOffreById(this.offre.id)] = this.offre;
+                        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Offert Updated', life: 3000 });
                         this.offreDialog = false;                     
                     },
                     error: (err: any) => {
@@ -135,6 +138,7 @@ export class OffresComponent {
                 
                 
             } else {
+              console.log('new');
                 this.offreService.save(this.offre).subscribe({
                     next: (res) => {
                         this.offreDialog = false;
@@ -147,10 +151,10 @@ export class OffresComponent {
                   });                
             }
           
-        }
+        
     }
 
-    findClientById(id: number): number {
+    findOffreById(id: number): number {
         let index = -1;
         for (let i = 0; i < this.offres.length; i++) {
             if (this.offres[i].id === id) {

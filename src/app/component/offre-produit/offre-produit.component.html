@@ -1,0 +1,129 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedOffresProduit()" [disabled]="!selectedOffresProduit || !selectedOffresProduit.length"></button>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+            <p-table #dt [value]="offresProduit" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','roles']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedOffresProduit" selectionMode="multiple" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Manage Offerts</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon></th>
+                        <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="valeur">Valeur <p-sortIcon field="valeur"></p-sortIcon></th>
+                        <th pSortableColumn="statut">Statut <p-sortIcon field="statut"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-offreProduit>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="offreProduit"></p-tableCheckbox>
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Id</span>
+                            {{offreProduit.id}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{offreProduit.name}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Validite</span>
+                            {{offreProduit.validite}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Statut</span>
+                            <span [class]="'product-badge role-' + (offreProduit.statut ? offreProduit.statut : '')">{{offreProduit.statut}}</span>
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Valeur</span>
+                            {{offreProduit.valeur}}
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editOffreProduit(offreProduit)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteOffreProduit(offreProduit)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="offreProduitDialog" [style]="{width: '450px'}" header="offreProduit Details" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="name">Name</label>
+                        <input type="text" pInputText id="name" [(ngModel)]="offreProduit.name" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !offreProduit.validite}"/>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreProduit.name">Name date is required.</small>
+                    </div>
+                    <div class="field">
+                        <label for="statut">Statut</label>
+                        <p-dropdown [(ngModel)]="offreProduit.statut" inputId="offreProduit" optionValue="label" [options]="statut" placeholder="Select">
+                            <ng-template pTemplate="selectedItem">
+                                <span *ngIf="offreProduit && offreProduit.statut" [class]="'product-badge status-' + offreProduit.statut.toString().toLowerCase()">{{offreProduit.statut}}</span>
+                            </ng-template>
+                            <ng-template let-option pTemplate="item">
+                                <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+                            </ng-template>
+                        </p-dropdown>
+                    </div>
+                    <div class="field">
+                    <label for="validite">Validite</label>
+                    <p-calendar appendTo="body" id="validite" [(ngModel)]="offreProduit.validite" [showIcon]="true" inputId="icon"></p-calendar>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreProduit.validite">Validity date is required.</small>
+                    </div>
+                <div class="field">
+                <label for="valeur">Valeur</label>
+                <p-inputNumber [(ngModel)]="offreProduit.valeur" mode="decimal" [showButtons]="true" [min]="0"></p-inputNumber>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreProduit.valeur">Offert's value is required.</small>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveOffreProduit()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteOffreProduitDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="offreProduit">Are you sure you want to delete <b>{{offreProduit.id}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteOffreProduitDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteOffresProduitDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>Are you sure you want to delete selected offerts?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteOffresProduitDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>
+

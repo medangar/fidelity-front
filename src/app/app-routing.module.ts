@@ -35,6 +35,8 @@ import { InscriptionComponent } from './component/inscription/inscription.compon
 import { ClientsComponent } from './component/client/clients/clients.component';
 import { CartesComponent } from './component/cartes/cartes.component';
 import { HistoTransactionComponent } from './component/histo-transaction/histo-transaction.component';
+import { OffreProduitComponent } from './component/offre-produit/offre-produit.component';
+import { OffreAchatComponent } from './component/offre-achat/offre-achat.component';
 import { ProduitsComponent } from './component/produits/produits.component';
 import { OffresComponent } from './component/offres/offres.component';
 
@@ -75,7 +77,9 @@ import { OffresComponent } from './component/offres/offres.component';
                     {path: 'cartes', component: CartesComponent},
                     {path: 'transactions', component: HistoTransactionComponent},
                     {path: 'produits', component: ProduitsComponent},
-                    {path: 'offres', component: OffresComponent}
+                    {path: 'offres', component: OffresComponent},
+                    {path: 'offreProduit', component: OffreProduitComponent},
+                    {path: 'offreAchat', component: OffreAchatComponent}
                 ]
             },
             {path: 'error', component: AppErrorComponent},

@@ -27,7 +27,7 @@ export class HistoTransactionComponent {
 
   cols: any[];
 
-  roles: any[];
+  types: any[];
 
   rowsPerPageOptions = [5, 10, 20];
 
@@ -54,10 +54,9 @@ export class HistoTransactionComponent {
           { field: 'typeTransaction', header: 'TypeTransaction' }
       ];
 
-      this.roles = [
-          { label: 'Admin', value: 'admin' },
-          { label: 'Client', value: 'client' },
-          { label: 'Caissier', value: 'caissier' }
+      this.types = [
+          { label: 'Debiteur', value: 'debiteur' },
+          { label: 'Crediteur', value: 'crediteur' },
       ];
   }
 

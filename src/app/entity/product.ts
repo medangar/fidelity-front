@@ -3,6 +3,6 @@ export class Product {
     name: string;
     price: number;
     quantity: number;
-    statut: boolean;
+    statut: string;
     category: string;
 }

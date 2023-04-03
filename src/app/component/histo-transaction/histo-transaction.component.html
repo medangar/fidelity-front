@@ -76,11 +76,6 @@
         <p-dialog [(visible)]="histoTransactionDialog" [style]="{width: '450px'}" header="histoTransaction Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 <div class="field">
-                    <label for="id">Id</label>
-                    <input type="text" pInputText id="id" [(ngModel)]="histoTransaction.id" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !histoTransaction.id}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !histoTransaction.idt">id is required.</small>
-                </div>
-                <div class="field">
                     <label for="soldeInit">SoldeInit</label>
                     <input type="text" pInputText id="soldeInit" [(ngModel)]="histoTransaction.soldeInit" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !histoTransaction.soldeInit}"/>
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !histoTransaction.soldeInit">SoldeInit is required.</small>
@@ -91,14 +86,8 @@
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !histoTransaction.soldeFnl">SoldeFnl is required.</small>
                 </div>
                 <div class="field">
-                    <label for="dateTransaction">DateTransaction</label>
-                    <input type="text" pInputText id="dateTransaction" [(ngModel)]="histoTransaction.dateTransaction" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !histoTransaction.dateTransaction}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !histoTransaction.dateTransaction">DateTransaction is required.</small>
-                </div>
-
-                <div class="field">
                     <label for="typeTransaction">TypeTransaction</label>
-                    <p-dropdown [(ngModel)]="histoTransaction.typeTransaction" inputId="typeTransaction" optionValue="label" [options]="roles" placeholder="Select">
+                    <p-dropdown [(ngModel)]="histoTransaction.typeTransaction" inputId="typeTransaction" optionValue="label" [options]="types" placeholder="Select">
                         <ng-template pTemplate="selectedItem">
                             <span *ngIf="histoTransaction && histoTransaction.typeTransaction" [class]="'histoTransaction-badge status-' + histoTransaction.typeTransaction.toString().toLowerCase()">{{histoTransaction.typeTransaction}}</span>
                         </ng-template>
@@ -106,6 +95,11 @@
                             <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
                         </ng-template>
                     </p-dropdown>
+                </div>
+                <div class="field">
+                    <label for="dateTransaction">DateTransaction</label>
+                    <input type="text" pInputText id="dateTransaction" [(ngModel)]="histoTransaction.dateTransaction" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !histoTransaction.dateTransaction}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !histoTransaction.dateTransaction">DateTransaction is required.</small>
                 </div>
             </ng-template>
 

@@ -9,12 +9,6 @@
                         <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedOffres()" [disabled]="!selectedOffres || !selectedOffres.length"></button>
                     </div>
                 </ng-template>
-
-                <ng-template pTemplate="right">
-                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
-                </ng-template>
-
             </p-toolbar>
             <p-table #dt [value]="offres" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','roles']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedOffres" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
@@ -32,6 +26,7 @@
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
                         <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon></th>
+                        <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
                         <th pSortableColumn="validite">Validité <p-sortIcon field="validite"></p-sortIcon></th>
                         <th pSortableColumn="statut">Statut <p-sortIcon field="statut"></p-sortIcon></th>
                         <th></th>
@@ -42,8 +37,13 @@
                         <td>
                             <p-tableCheckbox [value]="offre"></p-tableCheckbox>
                         </td>
-                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Id</span>
-                            {{offre.id }}
+                    <td style="width:14%; min-width:10rem;">
+                        <span class="p-column-title">Id</span>
+                        {{offre.id}}
+                    </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{offre.name}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Validité</span>
@@ -66,26 +66,27 @@
         <p-dialog [(visible)]="offreDialog" [style]="{width: '450px'}" header="offre Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 <div class="field">
-                    <label for="id">Id</label>
-                    <input type="text" pInputText id="id" [(ngModel)]="offre.id" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !offre.id}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !offre.id">identifiant is required.</small>
-                </div>
+                    <label for="name">Name</label>
+                        <input type="text" pInputText id="name" [(ngModel)]="offre.name" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !offre.name}"/>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !offre.name">Name is required.</small>
+                    </div>
+                    <div class="field">
+                        <label for="statut">Statut</label>
+                        <p-dropdown [(ngModel)]="offre.statut" inputId="offre" optionValue="label" [options]="statut" placeholder="Select">
+                            <ng-template pTemplate="selectedItem">
+                                <span *ngIf="offre && offre.statut" [class]="'product-badge status-' + offre.statut.toString().toLowerCase()">{{offre.statut}}</span>
+                            </ng-template>
+                            <ng-template let-option pTemplate="item">
+                                <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+                            </ng-template>
+                        </p-dropdown>
+                    </div>
                 <div class="field">
                 <label for="validite">Validité</label>
-                    <input type="text" pInputText id="validite" [(ngModel)]="offre.validite" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !client.nom}"/>
+                <p-calendar appendTo="body" id="validite" [(ngModel)]="offre.validite" [showIcon]="true" inputId="icon"></p-calendar>
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !offre.validite">validity date is required.</small>
                 </div>
-                <div class="field">
-                    <label for="statut">Statut</label>
-                    <p-dropdown [(ngModel)]="offre.statut" inputId="offre" optionValue="label" [options]="Offres" placeholder="Select">
-                        <ng-template pTemplate="selectedItem">
-                            <span *ngIf="offre && offre.statut" [class]="'product-badge status-' + offre.statut.toString().toLowerCase()">{{offre.statut}</span>
-                        </ng-template>
-                        <ng-template let-option pTemplate="item">
-                            <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
-                        </ng-template>
-                    </p-dropdown>
-                </div>
+                
             </ng-template>
 
             <ng-template pTemplate="footer">
