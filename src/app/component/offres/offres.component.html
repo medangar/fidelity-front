@@ -81,9 +81,22 @@
                             </ng-template>
                         </p-dropdown>
                     </div>
+
+                    <div class="field">
+                        <label>OffreProduit</label>
+                        <p-autoComplete ngDefaultControl [(ngModel)]="offre.offreProduit" [suggestions]="filteredOffreProduit"
+                            (completeMethod)="filterOffreProduit($event)" field="name" [dropdown]="true">
+                        </p-autoComplete>
+                    </div>
+                    <div class="field">
+                        <label>OffreAchat</label>
+                        <p-autoComplete ngDefaultControl [(ngModel)]="offre.offreAchat" [suggestions]="filteredOffreAchat"
+                            (completeMethod)="filterOffreAchat($event)" field="name" [dropdown]="true">
+                        </p-autoComplete>
+                    </div>
                 <div class="field">
                 <label for="validite">Validité</label>
-                <p-calendar appendTo="body" id="validite" [(ngModel)]="offre.validite" [showIcon]="true" inputId="icon"></p-calendar>
+                <p-calendar appendTo="body" id="validite" dateFormat="yy-mm-dd" [(ngModel)]="offre.validite" [showIcon]="true" inputId="icon"></p-calendar>
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !offre.validite">validity date is required.</small>
                 </div>
                 

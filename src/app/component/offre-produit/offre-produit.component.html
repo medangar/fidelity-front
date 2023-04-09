@@ -5,18 +5,26 @@
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
-                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedOffresProduit()" [disabled]="!selectedOffresProduit || !selectedOffresProduit.length"></button>
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                            (click)="openNew()"></button>
+                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
+                            (click)="deleteSelectedOffresProduit()"
+                            [disabled]="!selectedOffresProduit || !selectedOffresProduit.length"></button>
                     </div>
                 </ng-template>
             </p-toolbar>
-            <p-table #dt [value]="offresProduit" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','roles']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedOffresProduit" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="offresProduit" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+                [globalFilterFields]="['name','country.name','representative.name','roles']" [rows]="10"
+                [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [(selection)]="selectedOffresProduit" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Manage Offerts</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."
+                                class="w-full sm:w-auto" />
                         </span>
                     </div>
                 </ng-template>
@@ -27,6 +35,7 @@
                         </th>
                         <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="valeur">Validite <p-sortIcon field="valeur"></p-sortIcon></th>
                         <th pSortableColumn="valeur">Valeur <p-sortIcon field="valeur"></p-sortIcon></th>
                         <th pSortableColumn="statut">Statut <p-sortIcon field="statut"></p-sortIcon></th>
                         <th></th>
@@ -49,17 +58,21 @@
                             <span class="p-column-title">Validite</span>
                             {{offreProduit.validite}}
                         </td>
-                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Statut</span>
-                            <span [class]="'product-badge role-' + (offreProduit.statut ? offreProduit.statut : '')">{{offreProduit.statut}}</span>
-                        </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Valeur</span>
                             {{offreProduit.valeur}}
                         </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Statut</span>
+                            <span
+                                [class]="'product-badge role-' + (offreProduit.statut ? offreProduit.statut : '')">{{offreProduit.statut}}</span>
+                        </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editOffreProduit(offreProduit)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteOffreProduit(offreProduit)"></button>
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"
+                                    (click)="editOffreProduit(offreProduit)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    (click)="deleteOffreProduit(offreProduit)"></button>
                             </div>
                         </td>
                     </tr>
@@ -67,39 +80,74 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="offreProduitDialog" [style]="{width: '450px'}" header="offreProduit Details" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="offreProduitDialog" [style]="{width: '450px'}" header="offreProduit Details"
+            [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 <div class="field">
                     <label for="name">Name</label>
-                        <input type="text" pInputText id="name" [(ngModel)]="offreProduit.name" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !offreProduit.validite}"/>
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreProduit.name">Name date is required.</small>
-                    </div>
-                    <div class="field">
-                        <label for="statut">Statut</label>
-                        <p-dropdown [(ngModel)]="offreProduit.statut" inputId="offreProduit" optionValue="label" [options]="statut" placeholder="Select">
-                            <ng-template pTemplate="selectedItem">
-                                <span *ngIf="offreProduit && offreProduit.statut" [class]="'product-badge status-' + offreProduit.statut.toString().toLowerCase()">{{offreProduit.statut}}</span>
-                            </ng-template>
-                            <ng-template let-option pTemplate="item">
-                                <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
-                            </ng-template>
-                        </p-dropdown>
-                    </div>
-                    <div class="field">
-                    <label for="validite">Validite</label>
-                    <p-calendar appendTo="body" id="validite" [(ngModel)]="offreProduit.validite" [showIcon]="true" inputId="icon"></p-calendar>
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreProduit.validite">Validity date is required.</small>
-                    </div>
+                    <input type="text" pInputText id="name" [(ngModel)]="offreProduit.name" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !offreProduit.validite}" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreProduit.name">Name date is
+                        required.</small>
+                </div>
                 <div class="field">
-                <label for="valeur">Valeur</label>
-                <p-inputNumber [(ngModel)]="offreProduit.valeur" mode="decimal" [showButtons]="true" [min]="0"></p-inputNumber>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreProduit.valeur">Offert's value is required.</small>
+                    <label for="Produits">Produits</label>
+                    <p-multiSelect id="Produits" [options]="products" [(ngModel)]="offreProduit.produits"
+                        defaultLabel="Select a product" optionLabel="name" class="multiselect-custom">
+                        <ng-template let-value pTemplate="selectedItems">
+                            <div class="country-item country-item-value" *ngFor="let option of offreProduit.produits">
+                                <img src="assets/demo/flags/flag_placeholder.png"
+                                    [class]="'flag flag-' + option.name.toLowerCase()" />
+                                <div>{{option.name}}</div>
+                            </div>
+                            <div *ngIf="!offreProduit.produits || offreProduit.produits.length === 0"
+                                class="produit-placeholder">
+                                Select products
+                            </div>
+                        </ng-template>
+                        <ng-template let-produit pTemplate="item">
+                            <div class="produit-item">
+                                <img src="assets/demo/flags/flag_placeholder.png"
+                                    [class]="'flag flag-' + produit.name.toLowerCase()" />
+                                <div>{{produit.name}}</div>
+                            </div>
+                        </ng-template>
+                    </p-multiSelect>
+                </div>
+                <div class="field">
+                    <label for="statut">Statut</label>
+                    <p-dropdown [(ngModel)]="offreProduit.statut" inputId="offreProduit" optionValue="label"
+                        [options]="statut" placeholder="Select">
+                        <ng-template pTemplate="selectedItem">
+                            <span *ngIf="offreProduit && offreProduit.statut"
+                                [class]="'product-badge status-' + offreProduit.statut.toString().toLowerCase()">{{offreProduit.statut}}</span>
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+                <div class="field">
+                    <label for="validite">Validite</label>
+                    <p-calendar appendTo="body" id="Validite" dateFormat="yy-mm-dd" [(ngModel)]="offreProduit.validite" [showIcon]="true" inputId="icon"></p-calendar>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreProduit.validite">Validity date is
+                        required.</small>
+                </div>
+
+                <div class="field">
+                    <label for="valeur">Valeur</label>
+                    <p-inputNumber [(ngModel)]="offreProduit.valeur" mode="decimal" [showButtons]="true"
+                        [min]="0"></p-inputNumber>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreProduit.valeur">Offert's value is
+                        required.</small>
                 </div>
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveOffreProduit()"></button>
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text"
+                    (click)="saveOffreProduit()"></button>
             </ng-template>
         </p-dialog>
 
@@ -109,8 +157,10 @@
                 <span *ngIf="offreProduit">Are you sure you want to delete <b>{{offreProduit.id}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteOffreProduitDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteOffreProduitDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
+                    (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
 
@@ -120,10 +170,11 @@
                 <span>Are you sure you want to delete selected offerts?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteOffresProduitDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteOffresProduitDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
+                    (click)="confirmDeleteSelected()"></button>
             </ng-template>
         </p-dialog>
     </div>
 </div>
-

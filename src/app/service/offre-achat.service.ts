@@ -8,6 +8,10 @@ import { OffreAchat } from '../entity/offre-achat';
   providedIn: 'root'
 })
 export class OffreAchatService {
+  
+  saveOffreAchat(offreAchat: OffreAchat) {
+    throw new Error('Method not implemented.');
+  }
   private url ='/api/offreAchat';
 
   constructor(private httpClient: HttpClient) { }

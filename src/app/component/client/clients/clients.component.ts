@@ -146,7 +146,7 @@ export class ClientsComponent {
                         this.clientDialog = false;
                         this.clients.push(res);
                         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Client Created', life: 3000 });
-                     },
+                    },
                     error: (err: any) => {                      
                       console.log(err,'edit client failed');
                     }

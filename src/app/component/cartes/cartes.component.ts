@@ -3,7 +3,9 @@ import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table/table';
 import { Carte } from 'src/app/entity/carte';
+import { Offre } from 'src/app/entity/offre';
 import { CarteService } from 'src/app/service/carte.service';
+import { OffreService } from 'src/app/service/offre.service';
 
 @Component({
   selector: 'app-cartes',
@@ -22,6 +24,13 @@ export class CartesComponent {
 
     carte: Carte;
 
+    offres: Offre[];
+
+
+    filteredOffres: any[];
+
+    selectedOffreAdvanced: any[];
+
     selectedCartes: Carte[];
 
     submitted: boolean;
@@ -32,7 +41,8 @@ export class CartesComponent {
 
     rowsPerPageOptions = [5, 10, 20];
     statut: { label: string; value: string; }[];
-    constructor(private carteService: CarteService, private messageService: MessageService, private confirmationService: ConfirmationService) {
+
+    constructor(private carteService: CarteService,private offreService: OffreService, private messageService: MessageService, private confirmationService: ConfirmationService) {
         
     }
     
@@ -47,6 +57,18 @@ export class CartesComponent {
           this.cartes=[]; 
         }
       });
+
+      this.offreService.getOffres().subscribe({
+        next: (res) => {        
+          this.offres = res;               
+              
+        },
+        error: (err) => {
+          console.log(err);
+          this.offres=[]; 
+        }
+      });
+
 
       this.cols = [
           { field: 'carteId', header: 'CarteId' },
@@ -69,10 +91,11 @@ export class CartesComponent {
   }
 
   deleteSelectedCartes() {
-      this.deleteCarteDialog = true;
+      this.deleteCartesDialog = true;
   }
 
-  editCarte(carte: Carte) {
+  editCarte(carte: Carte) { 
+    console.log('for edit',carte) ;  
       this.carte = { ...carte };
       this.carteDialog = true;
   }
@@ -83,17 +106,33 @@ export class CartesComponent {
   }
 
   confirmDeleteSelected() {
-      this.deleteCarteDialog = false;
-      this.cartes = this.cartes.filter(val => !this.selectedCartes.includes(val));
-      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'cards Deleted', life: 3000 });
-      this.selectedCartes = [];
+    const ids : number[] = this.selectedCartes.flatMap((carte: Carte) => carte.carteId)        
+        this.carteService.deleteCartes(ids).subscribe({
+            next: () => {
+                this.cartes = this.cartes.filter(val => !this.selectedCartes.includes(val));
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Cartes Deleted', life: 3000 });
+                this.selectedCartes = [];
+                this.deleteCartesDialog = false;
+            },
+            error: (err: any) => {
+              console.log(err,'delete cartes failed');
+            }
+          });
   }
 
   confirmDelete() {
-      this.deleteCarteDialog = false;
-      this.cartes = this.cartes.filter(val => val.carteId !== this.carte.carteId);
-      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'card Deleted', life: 3000 });
-      this.carte = new Carte();
+    this.deleteCarteDialog = false;       
+    this.carteService.deleteCarte(this.carte.carteId).subscribe({
+        next: () => {
+          this.cartes = this.cartes.filter(val => val.carteId !== this.carte.carteId);
+          console.log('delete successfuly');
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'carte Deleted', life: 3000 });
+          this.carte = new Carte();
+        },
+        error: (err: any) => {
+          console.log(err,'delete failed');
+        }
+      });      
   }
 
   hideDialog() {
@@ -103,24 +142,36 @@ export class CartesComponent {
 
   saveCarte() {
       this.submitted = true;
-
-      if (this.carte.carteId) {
+      console.log(this.carte);
           if (this.carte.carteId) {
-              // @ts-ignore
-              this.cartes[this.findCarteById(this.carte.carteId)] = this.carte;
-              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'card Updated', life: 3000 });
+            console.log('edit');
+            this.carteService.editCarte(this.carte).subscribe({
+                next: (res) => {
+                    this.cartes[this.findCarteById(this.carte.carteId)] = this.carte;
+                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Card Updated', life: 3000 });
+                    this.carteDialog = false;                     
+                },
+                error: (err: any) => {
+                  
+                  console.log(err,'edit Card failed');
+                }
+              });
           } else {
-              this.carte.carteId = this.createId();
-              // @ts-ignore
-              this.cartes.push(this.carte);
-              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'card Created', life: 3000 });
+              
+            console.log('new');
+            this.carteService.saveCarte(this.carte).subscribe({
+                next: (res) => {
+                    this.carteDialog = false;
+                    this.cartes.push(res);
+                    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Card Created', life: 3000 });
+              },
+                error: (err: any) => {                      
+                  console.log(err,'Save Card failed');
+                }
+              });
           }
-
-          this.cartes = [...this.cartes];
-          this.carteDialog = false;
-          this.carte = new Carte();
+        
       }
-  }
 
   findCarteById(carteId: number): number {
       let index = -1;
@@ -134,13 +185,22 @@ export class CartesComponent {
       return index;
   }
 
-  createId(): number {
-  return Math.random();
-  }
 
   onGlobalFilter(table: Table, event: Event) {
       table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 
+  filterOffres(event) {
+    const filtered: any[] = [];
+    const query = event.query;
+    for (let i = 0; i < this.offres.length; i++) {
+        const offre = this.offres[i];
+        if (offre.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+            filtered.push(offre);
+        }
+    }
+
+    this.filteredOffres = filtered;
+}
 }
 

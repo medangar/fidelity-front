@@ -1,3 +1,5 @@
+import { Offre } from "./offre";
+
 export class OffreAchat {
     id: number;
     name:string;
@@ -5,4 +7,5 @@ export class OffreAchat {
     valeur:number;
     statut:string;
     validite:Date;
+    offre:Offre;
 }

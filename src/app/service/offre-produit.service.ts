@@ -9,7 +9,7 @@ import { OffreProduit } from '../entity/offre-produit';
 })
 export class OffreProduitService {
 
-  private url ='/api/offre';
+  private url ='/api/offreProduit';
 
   constructor(private httpClient: HttpClient) { }
 

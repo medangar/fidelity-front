@@ -5,18 +5,26 @@
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
-                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedOffresAchat()" [disabled]="!selectedOffresAchat || !selectedOffresAchat.length"></button>
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                            (click)="openNew()"></button>
+                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"
+                            (click)="deleteSelectedOffresAchat()"
+                            [disabled]="!selectedOffresAchat || !selectedOffresAchat.length"></button>
                     </div>
                 </ng-template>
             </p-toolbar>
-            <p-table #dt [value]="offresAchat" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','roles']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedOffresAchat" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="offresAchat" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+                [globalFilterFields]="['name','country.name','representative.name','roles']" [rows]="10"
+                [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [(selection)]="selectedOffresAchat" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Manage Offerts</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."
+                                class="w-full sm:w-auto" />
                         </span>
                     </div>
                 </ng-template>
@@ -27,9 +35,11 @@
                         </th>
                         <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon></th>
                         <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="validite">validite <p-sortIcon field="validite"></p-sortIcon></th>
                         <th pSortableColumn="valeur">Valeur <p-sortIcon field="valeur"></p-sortIcon></th>
                         <th pSortableColumn="sommeMin">SommeMin <p-sortIcon field="sommeMin"></p-sortIcon></th>
                         <th pSortableColumn="statut">Statut <p-sortIcon field="statut"></p-sortIcon></th>
+                        <th pSortableColumn="offre">Offre <p-sortIcon field="offre"></p-sortIcon></th>
                         <th></th>
                     </tr>
                 </ng-template>
@@ -50,24 +60,30 @@
                             <span class="p-column-title">Validite</span>
                             {{offreAchat.validite}}
                         </td>
-                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Statut</span>
-                            <span [class]="'product-badge role-' + (offreAchat.statut ? offreAchat.statut : '')">{{offreAchat.statut}}</span>
-                        </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Valeur</span>
                             {{offreAchat.valeur}}
-                        </td>
-                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Statut</span>
-                            <span [class]="'product-badge role-' + (offreAchat.statut ? offreAchat.statut : '')">{{offreAchat.statut}}</span>
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">SommeMin</span>
                             {{offreAchat.sommeMin}}
                         </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Statut</span>
+                            <span
+                                [class]="'product-badge role-' + (offreAchat.statut ? offreAchat.statut : '')">{{offreAchat.statut}}</span>
+                        </td>
+
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">Offre</span>
+                            {{offreAchat.offre.name }}
+                        </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editOffreAchat(offreAchat)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteOffreAchat(offreAchat)"></button>
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"
+                                    (click)="editOffreAchat(offreAchat)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    (click)="deleteOffreAchat(offreAchat)"></button>
                             </div>
                         </td>
                     </tr>
@@ -75,45 +91,62 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="offreAchatDialog" [style]="{width: '450px'}" header="offreAchat Details" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="offreAchatDialog" [style]="{width: '450px'}" header="offreAchat Details" [modal]="true"
+            class="p-fluid">
             <ng-template pTemplate="content">
                 <div class="field">
                     <label for="name">Name</label>
-                        <input type="text" pInputText id="name" [(ngModel)]="offreAchat.name" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !offreAchat.name}"/>
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreAchat.name">Name is required.</small>
-                    </div>
-                    <div class="field">
-                        <label for="statut">Statut</label>
-                        <p-dropdown [(ngModel)]="offreAchat.statut" inputId="offreAchat" optionValue="label" [options]="statut" placeholder="Select">
-                            <ng-template pTemplate="selectedItem">
-                                <span *ngIf="offreAchat && offreAchat.statut" [class]="'product-badge status-' + offreAchat.statut.toString().toLowerCase()">{{offreAchat.statut}}</span>
-                            </ng-template>
-                            <ng-template let-option pTemplate="item">
-                                <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
-                            </ng-template>
-                        </p-dropdown>
-                    </div>
-                    <div class="field">
-                        <label for="validite">Validite</label>
-                        <p-calendar appendTo="body" id="validite" [(ngModel)]="offreAchat.validite" [showIcon]="true" inputId="icon"></p-calendar>
-                            <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreAchat.validite">Validity date is required.</small>
-                        </div>
+                    <input type="text" pInputText id="name" [(ngModel)]="offreAchat.name" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !offreAchat.name}" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreAchat.name">Name is required.</small>
+                </div>
                 <div class="field">
-                <label for="valeur">Valeur</label>
-                <p-inputNumber [(ngModel)]="offreAchat.valeur" mode="decimal" [showButtons]="true" [min]="0"></p-inputNumber>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreAchat.valeur">Offert's value is required.</small>
+                    <label for="statut">Statut</label>
+                    <p-dropdown [(ngModel)]="offreAchat.statut" inputId="offreAchat" optionValue="label"
+                        [options]="statut" placeholder="Select">
+                        <ng-template pTemplate="selectedItem">
+                            <span *ngIf="offreAchat && offreAchat.statut"
+                                [class]="'product-badge status-' + offreAchat.statut.toString().toLowerCase()">{{offreAchat.statut}}</span>
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+                <div class="field">
+                    <label for="validite">Validite</label>
+                    <p-calendar appendTo="body" id="validite" dateFormat="yy-mm-dd" [(ngModel)]="offreAchat.validite" [showIcon]="true" inputId="icon"></p-calendar>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreAchat.validite">Validity date is
+                        required.</small>
+                </div>
+                <div class="field">
+                    <label>Offre</label>
+                    <p-autoComplete ngDefaultControl [(ngModel)]="offreAchat.offre" [suggestions]="filteredOffres"
+                        (completeMethod)="filterOffres($event)" field="name" [dropdown]="true">
+                    </p-autoComplete>
+                </div>
+                <div class="field">
+                    <label for="valeur">Valeur</label>
+                    <p-inputNumber [(ngModel)]="offreAchat.valeur" mode="decimal" [showButtons]="true"
+                        [min]="0"></p-inputNumber>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreAchat.valeur">Offert's value is
+                        required.</small>
                 </div>
                 <div class="field">
                     <label for="sommeMin">SommeMin</label>
-                        <input type="text" pInputText id="valeur" [(ngModel)]="offreAchat.sommeMin" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !offreAchat.sommeMin}"/>
-                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreAchat.sommeMin">SommeMin is required.</small>
-                    </div>
-                
+                    <input type="text" pInputText id="valeur" [(ngModel)]="offreAchat.sommeMin" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !offreAchat.sommeMin}" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreAchat.sommeMin">SommeMin is
+                        required.</small>
+                </div>
+
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveOffreAchat()"></button>
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text"
+                    (click)="saveOffreAchat()"></button>
             </ng-template>
         </p-dialog>
 
@@ -123,8 +156,10 @@
                 <span *ngIf="offreAchat">Are you sure you want to delete <b>{{offreAchat.id}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteOffreAchatDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDelete()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteOffreAchatDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
+                    (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
 
@@ -134,10 +169,11 @@
                 <span>Are you sure you want to delete selected offerts?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteOffresAchatDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="confirmDeleteSelected()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteOffresAchatDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
+                    (click)="confirmDeleteSelected()"></button>
             </ng-template>
         </p-dialog>
     </div>
 </div>
-

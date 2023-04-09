@@ -147,7 +147,7 @@ export class ProduitsComponent {
                         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
                 },
                     error: (err: any) => {                      
-                      console.log(err,'edit product failed');
+                      console.log(err,'add product failed');
                     }
                   });                
         

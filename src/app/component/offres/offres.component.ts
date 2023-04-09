@@ -3,6 +3,8 @@ import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import {Table} from 'primeng/table';
 import { Offre } from 'src/app/entity/offre';
+import { OffreAchat } from 'src/app/entity/offre-achat';
+import { OffreProduit } from 'src/app/entity/offre-produit';
 import { OffreService } from 'src/app/service/offre.service';
 @Component({
   selector: 'app-offres',
@@ -12,7 +14,7 @@ import { OffreService } from 'src/app/service/offre.service';
 })
 export class OffresComponent {
   offreDialog: boolean;
-
+  minDateValue= "20/01/2023"
     deleteOffreDialog: boolean = false;
 
     deleteOffresDialog: boolean = false;
@@ -20,6 +22,21 @@ export class OffresComponent {
     offres: Offre[]=[]; 
 
     offre: Offre;
+
+    offreProduit:OffreProduit[];
+
+    filteredOffreProduit: any[];
+
+
+    selectedOffreProduitAdvanced: any[];
+
+
+    OffreAchat:OffreAchat[];
+
+    filteredOffreAchat: any[];
+
+    selectedOffreAchatAdvanced: any[];
+
 
     selectedOffres: Offre[];
 
@@ -30,6 +47,7 @@ export class OffresComponent {
     statut: any[];
 
     rowsPerPageOptions = [5, 10, 20];
+  
 
     constructor(private offreService: OffreService, private messageService: MessageService, private confirmationService: ConfirmationService) {
         
@@ -39,7 +57,9 @@ export class OffresComponent {
         this.offreService.getOffres().subscribe({
           next: (res) => {        
             this.offres = res;
-            console.log("list",this.offres);                  
+            console.log("list",this.offres);  
+            console.log(this.minDateValue);                  
+                
           },
           error: (err) => {
             console.log(err);
@@ -55,11 +75,39 @@ export class OffresComponent {
         ];
 
         this.statut = [
-            { label: 'Active', value: 'active' },
-            { label: 'Non', value: 'non' },
+            { label: 'Activer', value: 'activer' },
+            { label: 'Desactiver', value: 'desactiver' },
         ];
+        
     }
+  //   getNowDate() {
+  //     //return string
+  //     var returnDate = "";
+  //     //get datetime now
+  //     var today = new Date();
+  //     //split
+  //     var dd = today.getDate();
+  //     var mm = today.getMonth() + 1; //because January is 0! 
+  //     var yyyy = today.getFullYear();
+  //     //Interpolation date
+  //     if (dd < 10) {
+  //         returnDate += `0${dd}-`;
+  //     } else {
+  //         returnDate += `${dd}-`;
+  //     }
+  
+  //     if (mm < 10) {
+  //         returnDate += `0${mm}-`;
+  //     } else {
+  //         returnDate += `${mm}-`;
+  //     }
+  //     returnDate += yyyy;
 
+
+      
+  //     console.log(returnDate)
+  //     return returnDate;
+  // }
     openNew() {
         this.offre = new Offre();
         this.submitted = false;
@@ -168,5 +216,30 @@ export class OffresComponent {
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
+    
+    filterOffreProduit(event) {
+      const filtered: any[] = [];
+      const query = event.query;
+      for (let i = 0; i < this.offreProduit.length; i++) {
+          const offre = this.offreProduit[i];
+          if (OffreProduit.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+              filtered.push(OffreProduit);
+          }
+      }
+  
+      this.filteredOffreProduit = filtered;
+  }
+filterOffreAchat(event) {
+  const filtered: any[] = [];
+  const query = event.query;
+  for (let i = 0; i < this.OffreAchat.length; i++) {
+      const offre = this.OffreAchat[i];
+      if (OffreAchat.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+          filtered.push(OffreAchat);
+      }
+  }
+
+  this.filteredOffreAchat = filtered;
+}
 
 }
