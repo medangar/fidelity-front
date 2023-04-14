@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { Offre } from 'src/app/entity/offre';
 import { OffreProduit } from 'src/app/entity/offre-produit';
 import { Product } from 'src/app/entity/product';
 import { OffreProduitService } from 'src/app/service/offre-produit.service';
+import { OffreService } from 'src/app/service/offre.service';
 import { ProductService } from 'src/app/service/product.service';
 
 
@@ -26,6 +28,13 @@ export class OffreProduitComponent {
 
   selectedOffresProduit: OffreProduit[];
 
+  offres: Offre[];
+
+
+  filteredOffres: any[];
+
+  selectedOffreAdvanced: any[];
+
   submitted: boolean;
 
   cols: any[];
@@ -35,9 +44,9 @@ export class OffreProduitComponent {
   rowsPerPageOptions = [5, 10, 20];
   minDateValue: any;
 
-  products:Product[];
+  products: Product[];
 
-  constructor(private offreProduitService: OffreProduitService,private productService: ProductService, private messageService: MessageService, private confirmationService: ConfirmationService) {
+  constructor(private offreProduitService: OffreProduitService,private offreService: OffreService, private productService: ProductService, private messageService: MessageService, private confirmationService: ConfirmationService) {
 
   }
 
@@ -55,13 +64,24 @@ export class OffreProduitComponent {
     });
 
     this.productService.getProducts().subscribe({
-      next: (res) => {        
+      next: (res) => {
         this.products = res;
-        console.log("list",this.products);                  
+        console.log("list", this.products);
       },
       error: (err) => {
         console.log(err);
-        this.products=[]; 
+        this.products = [];
+      }
+    });
+
+    this.offreService.getOffres().subscribe({
+      next: (res) => {        
+        this.offres = res;               
+            
+      },
+      error: (err) => {
+        console.log(err);
+        this.offres=[]; 
       }
     });
 
@@ -181,6 +201,18 @@ export class OffreProduitComponent {
   }
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
+  filterOffres(event) {
+    const filtered: any[] = [];
+    const query = event.query;
+    for (let i = 0; i < this.offres.length; i++) {
+      const offre = this.offres[i];
+      if (offre.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(offre);
+      }
+    }
+
+    this.filteredOffres = filtered;
   }
 
 }

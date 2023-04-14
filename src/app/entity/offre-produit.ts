@@ -1,3 +1,4 @@
+import { Offre } from "./offre";
 import { Product } from "./product";
 
 export class OffreProduit { 
@@ -6,6 +7,7 @@ export class OffreProduit {
     valeur:number;
     statut:String;
     validite:Date;
+    offre:Offre;
     produits:Product[];
 
 }

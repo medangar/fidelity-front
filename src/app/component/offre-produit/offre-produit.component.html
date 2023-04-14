@@ -38,6 +38,7 @@
                         <th pSortableColumn="valeur">Validite <p-sortIcon field="valeur"></p-sortIcon></th>
                         <th pSortableColumn="valeur">Valeur <p-sortIcon field="valeur"></p-sortIcon></th>
                         <th pSortableColumn="statut">Statut <p-sortIcon field="statut"></p-sortIcon></th>
+                        <th pSortableColumn="offre">Offre <p-sortIcon field="offre"></p-sortIcon></th>
                         <th></th>
                     </tr>
                 </ng-template>
@@ -65,6 +66,10 @@
                         <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Statut</span>
                             <span
                                 [class]="'product-badge role-' + (offreProduit.statut ? offreProduit.statut : '')">{{offreProduit.statut}}</span>
+                        </td>
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">Offre</span>
+                            {{offreProduit.offre.name }}
                         </td>
                         <td>
                             <div class="flex">
@@ -129,9 +134,16 @@
                 </div>
                 <div class="field">
                     <label for="validite">Validite</label>
-                    <p-calendar appendTo="body" id="Validite" dateFormat="yy-mm-dd" [(ngModel)]="offreProduit.validite" [showIcon]="true" inputId="icon"></p-calendar>
+                    <p-calendar appendTo="body" id="Validite" dateFormat="yy-mm-dd" [(ngModel)]="offreProduit.validite"
+                        [showIcon]="true" inputId="icon"></p-calendar>
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !offreProduit.validite">Validity date is
                         required.</small>
+                </div>
+                <div class="field">
+                    <label>Offre</label>
+                    <p-autoComplete ngDefaultControl [(ngModel)]="offreProduit.offre" [suggestions]="filteredOffres"
+                        (completeMethod)="filterOffres($event)" field="name" [dropdown]="true">
+                    </p-autoComplete>
                 </div>
 
                 <div class="field">
