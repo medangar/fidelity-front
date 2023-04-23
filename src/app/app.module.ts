@@ -156,6 +156,8 @@ import { ProduitsComponent } from './component/produits/produits.component';
 import { OffresComponent } from './component/offres/offres.component';
 import { OffreProduitComponent } from './component/offre-produit/offre-produit.component';
 import { OffreAchatComponent } from './component/offre-achat/offre-achat.component';
+import { DashboardAdminComponent } from './component/dashboard-admin/dashboard-admin.component';
+import { DashboardClientComponent } from './component/dashboard-client/dashboard-client.component';
 
 @NgModule({
     imports: [
@@ -299,7 +301,9 @@ import { OffreAchatComponent } from './component/offre-achat/offre-achat.compone
         OffresComponent,
         ProduitsComponent,
         OffreProduitComponent,
-        OffreAchatComponent
+        OffreAchatComponent,
+        DashboardAdminComponent,
+        DashboardClientComponent
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},

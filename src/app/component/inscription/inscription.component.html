@@ -69,7 +69,25 @@
                     <h4 *ngIf="form.get('email')?.invalid && form.get('email')?.touched">Identifiant est requis</h4>
                 </div>
             </div>
-            
+            <div class="field">
+                <label class="mb-3">Sexe</label>
+                <div class="formgrid grid">
+                    <div class="field-radiobutton col-6">
+                        <p-radioButton name="gender" value="Homme" formControlName="gender"></p-radioButton>
+                        <label for="Homme">Homme</label>
+                    </div>
+                    <div class="field-radiobutton col-6">
+                        <p-radioButton name="gender" value="Femme" formControlName="gender"></p-radioButton>
+                        <label for="Femme">Femme</label>
+                    </div>
+                    <h4 *ngIf="form.get('gender')?.invalid && form.get('gender')?.touched"> Gender is required.</h4>
+                </div>
+            </div>
+            <div class="field">
+                <label for="birthDate">Date de naissance</label>
+                <p-calendar appendTo="body" name="birthDate" dateFormat="yy-mm-dd" formControlName="birthDate" [showIcon]="true" inputId="icon"></p-calendar>
+                    <h4 *ngIf="form.get('birthDate')?.invalid && form.get('birthDate')?.touched">birth date is required.</h4>
+                </div>
             <div class="col-12 lg:col-12 md:col-12">
                 <div class="input-wrapper">
                     <label>Password</label>

@@ -6,8 +6,9 @@ email:String;
 tel:string;
 password:String;
 passwordConfirm:String;
-gender:number;
-birthDate:number;
+gender:string;
+birthDate:Date;
 address:String;
 codePostal:number;
+
 }

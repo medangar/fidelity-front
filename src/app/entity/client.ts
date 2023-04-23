@@ -8,6 +8,8 @@ export class Client {
     identifiant:string;
     adresse:string;
     codepostale:string;
+    sexe:string;
     role:string;
+    datenaiss:Date;
 
 }

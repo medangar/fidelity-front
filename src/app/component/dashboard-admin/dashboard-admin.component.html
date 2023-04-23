@@ -1,0 +1,111 @@
+<div class="dashboard">
+    <div class="grid">
+        <div class="col-12 md:col-12 lg:col-4">
+            <div class="overview-box monthly-sales">
+                <div class="overview-title">Total points</div>
+                <i class="pi pi-arrow-circle-up"></i>
+                <div class="overview-numbers">
+                    <strong>$ {{totalPoints}}</strong>
+                </div>
+                <div class="overview-ratios">16% more than previous month</div>
+                <img src="assets/layout/images/icon-sales.png" alt="california-layout" />
+            </div>
+        </div>
+        <div class="col-12 md:col-12 lg:col-4">
+            <div class="overview-box monthly-views">
+                <div class="overview-title">all transactions
+                    <i class="pi pi-arrow-circle-down"></i>
+                </div>
+                <div class="overview-numbers">
+                    <strong>{{numberTransactionsPerDay}}</strong>/Day
+                </div>
+                <div class="overview-ratios">2% less than previous month</div>
+                <img src="assets/layout/images/icon-views.png" alt="california-layout" />
+            </div>
+        </div>
+        <div class="col-12 md:col-12 lg:col-4">
+            <div class="overview-box monthly-users">
+                <div class="overview-title">VISIT USERS per Day
+                    <i class="pi pi-arrow-circle-up"></i>
+                </div>
+                <div class="overview-numbers">
+                    <strong>{{numberUserPerDay}}</strong>/Day
+                </div>
+                <div class="overview-ratios">9% more than previous month </div>
+                <img src="assets/layout/images/icon-users.png" alt="california-layout" />
+            </div>
+        </div>
+        <div class="col-12 lg:col-6">
+            <div class="card">
+                <h5>Bar Chart</h5>
+                <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
+            </div>
+        </div>
+
+        <div class="col-12 lg:col-6">
+            <div class="card flex flex-column align-items-center">
+                <h5 class="text-left w-full">Pie Chart</h5>
+                <p-chart type="pie" [data]="carteByClient" [options]="pieOptions" [style]="{'width': '50%'}"></p-chart>
+            </div>
+        </div>
+        <div class="col-12 lg:col-6">
+            <div class="card flex flex-column align-items-center">
+                <h5 class="text-left w-full">Doughnut Chart</h5>
+                <p-chart type="doughnut" [data]="gendre" [options]="pieOptions" [style]="{'width': '50%'}"></p-chart>
+            </div>
+        </div>
+
+        <div class="col-12 md:col-12 lg:col-4">
+            <p-panel styleClass="team" header="Team">
+                <ul>
+                    <li *ngFor="let user of users">
+                        <img src="assets/layout/images/avatar-john.png" alt="california-layout" />
+                        <div class="team-box">
+                            <span class="team-member">{{user.prenom}} {{user.nom}}</span>
+                            <span class="team-member-role">{{user.role}}</span>
+                        </div>
+                        <a href="#">
+                            <i class="pi pi-github"></i>
+                        </a>
+                        <a href="#">
+                            <i class="pi pi-twitter"></i>
+                        </a>
+                    </li>
+                </ul>
+            </p-panel>
+        </div>
+
+
+
+
+        <p-panel styleClass="daily-sales" header="Last Transactions">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align:center">Solde initial</th>
+                        <th>Solde final</th>
+                        <th>date</th>
+                        <th>type</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let transaction of transactions">
+                        <td style="text-align:center">
+                            <span>{{transaction.soldeInit}}</span>
+                        </td>
+                        <td>{{transaction.soldeFnl}}</td>
+                        <td>{{transaction.dateTransaction}}</td>
+                        <td>
+                            <i *ngIf="transaction.typeTransaction == 'debiteur'" class="pi pi-angle-up"></i>
+                            <i *ngIf="transaction.typeTransaction == 'crediteur'" class="pi pi-angle-down"></i>
+                        </td>
+                        <td>
+                            <p-button type="button" icon="pi pi-search"></p-button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </p-panel>
+    </div>
+</div>

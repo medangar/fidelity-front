@@ -30,7 +30,10 @@ passwordConfirm: [this.inscription.passwordConfirm, [Validators.required, Valida
 codepostal: [this.inscription.codePostal, Validators.required],
 identifiant: [this.inscription.identifiant, Validators.required],
 tel: [this.inscription.tel, Validators.required],
-address: [this.inscription.address, Validators.required]
+address: [this.inscription.address, Validators.required],
+gender: [this.inscription.gender, Validators.required],
+birthDate: [this.inscription.birthDate, Validators.required]
+
 }, { validator: this.checkPasswords });
 }
 
@@ -42,7 +45,6 @@ return password === confirmPassword ? null : { notSame: true }
 
 register(): void {
 this.emailExists = false;
-console.log("component",this.inscription);
 this.inscription=this.form.value;
 this.authService.inscription(this.inscription).subscribe({
 next: () => {

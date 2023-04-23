@@ -1,3 +1,4 @@
+import { Client } from "./client";
 import { Offre } from "./offre";
 
 export class Carte {
@@ -7,4 +8,6 @@ export class Carte {
   derniereVisite:Date;
   statut:String;
   offre:Offre;
+  name: any;
+  client: Client;
 }

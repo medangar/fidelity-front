@@ -39,6 +39,8 @@ import { OffreProduitComponent } from './component/offre-produit/offre-produit.c
 import { OffreAchatComponent } from './component/offre-achat/offre-achat.component';
 import { ProduitsComponent } from './component/produits/produits.component';
 import { OffresComponent } from './component/offres/offres.component';
+import { DashboardAdminComponent } from './component/dashboard-admin/dashboard-admin.component';
+import { DashboardClientComponent } from './component/dashboard-client/dashboard-client.component';
 
 
 @NgModule({
@@ -79,7 +81,9 @@ import { OffresComponent } from './component/offres/offres.component';
                     {path: 'produits', component: ProduitsComponent},
                     {path: 'offres', component: OffresComponent},
                     {path: 'offreProduit', component: OffreProduitComponent},
-                    {path: 'offreAchat', component: OffreAchatComponent}
+                    {path: 'offreAchat', component: OffreAchatComponent},
+                    {path: 'dashboardAdmin', component: DashboardAdminComponent},
+                    {path: 'dashboardClient', component: DashboardClientComponent}
                 ]
             },
             {path: 'error', component: AppErrorComponent},
