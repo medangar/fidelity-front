@@ -38,9 +38,15 @@ console.log('connxion successfuly',res.token);
 localStorage.setItem("id_token",res.token);
 localStorage.setItem("first_name",res.firstName);
 localStorage.setItem("last_name",res.lastName);
+localStorage.setItem("identifiant",res.identifiant);
 localStorage.setItem("isAdmin",res.admin);
 console.log("rolle",res.admin);
-this.router.navigate(['/']);
+if(res.admin){
+  this.router.navigate(['/dashboardAdmin']);
+}else{
+  this.router.navigate(['/dashboardClient']);
+}
+
 },
 error: (err: any) => {
 if(err.message == "Bad credentials"){
