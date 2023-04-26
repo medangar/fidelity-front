@@ -41,6 +41,7 @@ import { ProduitsComponent } from './component/produits/produits.component';
 import { OffresComponent } from './component/offres/offres.component';
 import { DashboardAdminComponent } from './component/dashboard-admin/dashboard-admin.component';
 import { DashboardClientComponent } from './component/dashboard-client/dashboard-client.component';
+import { UsePtsComponent } from './component/use-pts/use-pts.component';
 
 
 @NgModule({
@@ -83,7 +84,8 @@ import { DashboardClientComponent } from './component/dashboard-client/dashboard
                     {path: 'offreProduit', component: OffreProduitComponent},
                     {path: 'offreAchat', component: OffreAchatComponent},
                     {path: 'dashboardAdmin', component: DashboardAdminComponent},
-                    {path: 'dashboardClient', component: DashboardClientComponent}
+                    {path: 'dashboardClient', component: DashboardClientComponent},
+                    {path: 'usePoints', component: UsePtsComponent}
                 ]
             },
             {path: 'error', component: AppErrorComponent},

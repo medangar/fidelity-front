@@ -1,1 +1,25 @@
-<p>use-pts works!</p>
+<div class="grid">
+    <div class="col-12">
+        <div class="field">
+            <label>carte</label>
+            <p-dropdown [(ngModel)]="carte" inputId="carteId" optionValue="label" [options]="cartes"
+                placeholder="Select">
+                <ng-template pTemplate="selectedItem">
+                    <span *ngIf="carte && carte.carteId"
+                        [class]="'carte-badge status-' + carte.carteId">{{carte.carteId}}</span>
+                </ng-template>
+                <ng-template let-option pTemplate="item">
+                    <span [class]="'product-badge status-' + option.carteId">{{option.carteId}}</span>
+                </ng-template>
+            </p-dropdown>
+        </div>
+        <div class="field">
+            <label for="nbPoints">NbPoints</label>
+            <input type="text" pInputText id="nbPoints" [(ngModel)]="nbPoints" required autofocus />
+        </div>
+        <div class="field">
+        </div>
+        <button pButton pRipple label="usePoints" icon="pi pi-check" iconPos="right"   class="p-button-text"
+            (click)="usePoints()"></button>
+    </div>
+</div>

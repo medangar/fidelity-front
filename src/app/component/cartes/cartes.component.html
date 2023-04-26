@@ -103,6 +103,12 @@
                         required.</small>
                 </div>
                 <div class="field">
+                    <label for="name">Nom</label>
+                    <input type="text" pInputText id="name" [(ngModel)]="carte.name" required autofocus
+                        [ngClass]="{'ng-invalid ng-dirty' : submitted && !carte.name}" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !carte.name">card name is required.</small>
+                </div>
+                <div class="field">
                     <label for="statut">statut</label>
                     <p-dropdown [(ngModel)]="carte.statut" inputId="statut" optionValue="label" [options]="statuts"
                         placeholder="Select">

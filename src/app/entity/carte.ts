@@ -8,6 +8,6 @@ export class Carte {
   derniereVisite:Date;
   statut:String;
   offre:Offre;
-  name: any;
+  name: string;
   client: Client;
 }

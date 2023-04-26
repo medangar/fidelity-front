@@ -52,10 +52,10 @@ export class CartesComponent {
 
 
   constructor(private carteService: CarteService,
-     private offreService: OffreService, 
-     private clientService: ClientService, 
-     private messageService: MessageService, 
-     private confirmationService: ConfirmationService) {
+    private offreService: OffreService,
+    private clientService: ClientService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService) {
 
   }
 
@@ -99,7 +99,7 @@ export class CartesComponent {
       { field: 'derniereVisite', header: 'DerniereVisite' },
       { field: 'client', header: 'Client' },
       { field: 'statut', header: 'Statut' }
-     
+
     ];
 
     this.statuts = [
@@ -238,8 +238,8 @@ export class CartesComponent {
     this.filteredClients = filtered;
   }
 
-  getLabel(item : Client): string {
+  getLabel(item: Client): string {
     return `${item.prenom}  ${item.nom}`;
-}
+  }
 }
 
