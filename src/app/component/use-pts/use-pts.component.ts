@@ -1,68 +1,80 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { cA } from '@fullcalendar/core/internal-common';
 import { Carte } from 'src/app/entity/carte';
 import { Client } from 'src/app/entity/client';
 import { CarteService } from 'src/app/service/carte.service';
-import { Table } from 'primeng/table/table';
-
+import { HistoTransactionService } from 'src/app/service/histo-transaction.service';
 
 @Component({
   selector: 'app-use-pts',
   templateUrl: './use-pts.component.html',
   styleUrls: ['./use-pts.component.scss']
-  
-})
-export class UsePtsComponent {
 
-  carte: Carte;
+})
+export class UsePtsComponent implements OnInit {
+  carte: Carte=new Carte();
   cartes: Carte[] = [];
-  client: Client;
+  client: Client=new Client();
   clients: Client[];
   filteredCartes: any[];
   nbPoints: number;
-  carteIds:any[];
-  constructor(private carteService: CarteService) {
+  constructor(private carteService: CarteService,private histoTransactionService: HistoTransactionService ) {
 
   }
   ngOnInit() {
     this.carteService.getCartes().subscribe({
       next: (res) => {
         this.cartes = res;
-        this.carte=new Carte();
-        this.carte.name="";
         console.log("list", this.cartes);
-        
+
       },
-      
+
+
       error: (err) => {
         console.log(err);
         this.cartes = [];
       }
     });
-    this.carteIds = [
-      { label: 'Admin', value: 'admin' },
-      { label: 'Client', value: 'client' },
-      { label: 'Caissier', value: 'caissier' }
-    ];
+
   }
-  usePoints() { }
-  onGlobalFilter(table: Table, event: Event) {
-    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  usePoints() { 
+    console.log(this.nbPoints);
+    this.histoTransactionService.usePoint(this.carte.carteId,this.nbPoints).subscribe({
+    
+      next: (res) => {
+        console.log("res", res);
+
+      },
+
+
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  doOnSelect(event: any){
+    console.log( event );
+    this.client=event.client;
   }
 
   filterCartes(event) {
-    const filtered: Carte[] = [];
+    console.log(event);
+    const filtered: any[] = [];
     const query = event.query;
     for (let i = 0; i < this.cartes.length; i++) {
-      const client = this.cartes[i];
-      if (this.carte.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(this.carte);
+      const carte = this.cartes[i];
+      console.log(query);
+
+      if (query == "" || carte.carteId == query) {
+        filtered.push(carte);
       }
     }
     this.filteredCartes = filtered;
   }
 
-  getLabel(item: Carte): string {
-    return `${item.name} `;
+  getLabel(item: any): string {
+    return item.carteId;
   }
 }
 

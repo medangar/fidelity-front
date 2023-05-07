@@ -47,6 +47,9 @@ export class CartesComponent {
 
   statuts: any[];
 
+  isAdmin:boolean;
+  idClient:number;
+
   rowsPerPageOptions = [5, 10, 20];
   statut: { label: string; value: string; }[];
 
@@ -60,6 +63,9 @@ export class CartesComponent {
   }
 
   ngOnInit() {
+    this.isAdmin =(localStorage.getItem("isAdmin")=="true");
+    this.idClient=Number(localStorage.getItem("id"));
+    if(this.isAdmin){
     this.carteService.getCartes().subscribe({
       next: (res) => {
         this.cartes = res;
@@ -69,6 +75,17 @@ export class CartesComponent {
         this.cartes = [];
       }
     });
+  }else{
+    this.carteService.getCartesByClient(this.idClient).subscribe({
+      next: (res) => {
+        this.cartes = res;
+      },
+      error: (err) => {
+        console.log(err);
+        this.cartes = [];
+      }
+    });
+  }
     this.clientService.getClients().subscribe({
       next: (res) => {
         this.clients = res;

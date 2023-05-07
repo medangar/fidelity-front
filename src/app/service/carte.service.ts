@@ -8,6 +8,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CarteService {
+  
   private url ='/api/carte';
 
   constructor(private httpClient: HttpClient) { }
@@ -15,6 +16,11 @@ export class CarteService {
     return this.httpClient.get<Carte>(this.url)
     .pipe(catchError(this.handleError));
   }
+  getCartesByClient(idClient: number) {
+    return this.httpClient.get<Carte>(this.url+'/client/'+idClient)
+    .pipe(catchError(this.handleError));
+  }
+
   saveCarte(carte:Carte){
     return this.httpClient.post<Carte>(this.url,carte)
     .pipe(catchError(this.handleError));

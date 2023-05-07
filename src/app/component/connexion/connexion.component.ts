@@ -40,11 +40,16 @@ localStorage.setItem("first_name",res.firstName);
 localStorage.setItem("last_name",res.lastName);
 localStorage.setItem("identifiant",res.identifiant);
 localStorage.setItem("isAdmin",res.admin);
-console.log("rolle",res.admin);
-if(res.admin){
+localStorage.setItem("role",res.role);
+localStorage.setItem("sexe",res.gender);
+localStorage.setItem("id",res.id);
+console.log("role",res.role);
+if(res.role === "Admin"){
   this.router.navigate(['/dashboardAdmin']);
-}else{
+}else if(res.role === "Client"){
   this.router.navigate(['/dashboardClient']);
+}else{
+  this.router.navigate(['/addPoints']);
 }
 
 },

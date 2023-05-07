@@ -1,1 +1,55 @@
-<p>add-pts works!</p>
+<div class="grid">
+    <div class="col-12">
+        <div class="field">
+            <label>Carte ID</label>
+            <p-autoComplete [(ngModel)]="carte" [suggestions]="filteredCartes" (onSelect)="doOnSelect($event)"
+                (completeMethod)="filterCartes($event)" [field]="getLabel" [dropdown]="true">
+            </p-autoComplete>
+        </div>
+        <div class="field">
+            <label for="CarteId">CarteId : </label> <label id="CarteId" *ngIf="carte.carteId">{{carte.carteId}}</label>
+        </div>
+        <div class="field">
+            <label for="Solde">Solde : </label> <label id="Solde" *ngIf="carte.nbPoints">{{carte.nbPoints}}</label>
+        </div>
+        <div class="field">
+            <label for="Nom">Nom : </label> <label id="Nom" *ngIf="client.nom">{{client.nom}}</label>
+        </div>
+        <div class="field">
+            <label for="Prenom">Prénom : </label> <label id="Prenom" *ngIf="client.prenom">{{client.prenom}}</label>
+        </div>
+        <div class="field">
+            <label for="Email">Email : </label> <label id="Email" *ngIf="client.email">{{client.email}}</label>
+        </div>
+        <div class="field">
+            <label for="totaleCmd">Totale commande : </label>
+            <input type="text" pInputText id="totaleCmd" [(ngModel)]="totaleCmd" required autofocus />
+        </div>
+        <div class="field">
+            <label for="Produits">Produits</label>
+            <p-multiSelect id="Produits" [options]="products" [(ngModel)]="selectedProducts"
+                defaultLabel="Select a product" optionLabel="name" class="multiselect-custom">
+                <ng-template let-value pTemplate="selectedItems">
+                    <div class="country-item country-item-value" *ngFor="let option of selectedProducts">
+                        <img src="assets/demo/flags/flag_placeholder.png"
+                            [class]="'flag flag-' + option.name.toLowerCase()" />
+                        <div>{{option.name}}</div>
+                    </div>
+                    <div *ngIf="!selectedProducts || selectedProducts.length === 0"
+                        class="produit-placeholder">
+                        Select products
+                    </div>
+                </ng-template>
+                <ng-template let-produit pTemplate="item">
+                    <div class="produit-item">
+                        <img src="assets/demo/flags/flag_placeholder.png"
+                            [class]="'flag flag-' + produit.name.toLowerCase()" />
+                        <div>{{produit.name}}</div>
+                    </div>
+                </ng-template>
+            </p-multiSelect>
+        </div>
+        <div class="field">
+            <button pButton pRipple label="Save" icon="pi pi-check" (click)="addPoints()"></button>
+        </div>
+    </div>

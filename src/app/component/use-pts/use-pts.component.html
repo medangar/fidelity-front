@@ -1,25 +1,32 @@
 <div class="grid">
     <div class="col-12">
         <div class="field">
-            <label>carte</label>
-            <p-dropdown [(ngModel)]="carte" inputId="carteId" optionValue="label" [options]="cartes"
-                placeholder="Select">
-                <ng-template pTemplate="selectedItem">
-                    <span *ngIf="carte && carte.carteId"
-                        [class]="'carte-badge status-' + carte.carteId">{{carte.carteId}}</span>
-                </ng-template>
-                <ng-template let-option pTemplate="item">
-                    <span [class]="'product-badge status-' + option.carteId">{{option.carteId}}</span>
-                </ng-template>
-            </p-dropdown>
+            <label>Carte ID</label>
+            <p-autoComplete [(ngModel)]="carte" [suggestions]="filteredCartes" (onSelect)="doOnSelect($event)"
+                (completeMethod)="filterCartes($event)" [field]="getLabel" [dropdown]="true">
+            </p-autoComplete>
         </div>
         <div class="field">
-            <label for="nbPoints">NbPoints</label>
+            <label for="CarteId">CarteId : </label> <label id="CarteId" *ngIf="carte.carteId">{{carte.carteId}}</label>
+        </div>
+        <div class="field">
+            <label for="Solde">Solde : </label> <label id="Solde" *ngIf="carte.nbPoints">{{carte.nbPoints}}</label>
+        </div>
+        <div class="field">
+            <label for="Nom">Nom  : </label> <label id="Nom" *ngIf="client.nom">{{client.nom}}</label>
+        </div>
+        <div class="field">
+            <label for="Prenom">Prénom  : </label> <label id="Prenom" *ngIf="client.prenom">{{client.prenom}}</label>
+        </div>
+        <div class="field">
+            <label for="Email">Email  : </label> <label id="Email" *ngIf="client.email">{{client.email}}</label>
+        </div>
+        <div class="field">
+            <label for="nbPoints">NbPoints  : </label>
             <input type="text" pInputText id="nbPoints" [(ngModel)]="nbPoints" required autofocus />
         </div>
         <div class="field">
         </div>
-        <button pButton pRipple label="usePoints" icon="pi pi-check" iconPos="right"   class="p-button-text"
-            (click)="usePoints()"></button>
+            <button pButton pRipple label="Save" icon="pi pi-check" (click)="usePoints()"></button>
     </div>
 </div>

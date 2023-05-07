@@ -7,9 +7,10 @@ import {trigger, state, transition, style, animate} from '@angular/animations';
     template: `
         <div class="user-profile">
             <a href="#" (click)="onProfileClick($event)" id="sidebar-profile-button">
-                <img src="assets/layout/images/avatar.png" alt="california-layout"/>
-                <span class="sidebar-profile-name">Pauline Harrell</span>
-                <span class="sidebar-profile-role">Administrator</span>
+                <img *ngIf="sexe === 'Homme'" src="assets/layout/images/homme.jpg" alt="california-layout"/>
+                <img *ngIf="sexe === 'Femme'"src="assets/layout/images/femme.png" alt="california-layout"/>
+                <span class="sidebar-profile-name">{{firstName}} {{lastName}}</span>
+                <span class="sidebar-profile-role">{{role}}</span>
             </a>
 
             <ul id="sidebar-usermenu" class="usermenu" [ngClass]="{'usermenu-active':app.usermenuActive}"
@@ -148,9 +149,21 @@ import {trigger, state, transition, style, animate} from '@angular/animations';
         ])
     ]
 })
-export class AppProfileComponent {
+export class AppProfileComponent  {
+
+    firstName:string;
+    lastName:string;
+    role:string;
+    sexe:string;
 
     constructor(public app: AppMainComponent) {}
+
+    ngOnInit() {
+        this.firstName = localStorage.getItem("first_name");
+        this.lastName = localStorage.getItem("last_name");
+        this.role = localStorage.getItem("role");
+        this.sexe = localStorage.getItem("sexe");
+    }
 
     onProfileClick(event) {
         this.app.usermenuClick = true;

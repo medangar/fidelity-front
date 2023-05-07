@@ -31,20 +31,39 @@ export class HistoTransactionComponent {
 
     rowsPerPageOptions = [5, 10, 20];
 
+    isAdmin:boolean;
+  idClient:number;
+
     constructor(private histoTransactionService: HistoTransactionService, private messageService: MessageService, private confirmationService: ConfirmationService) {
 
     }
 
     ngOnInit() {
+        this.isAdmin =(localStorage.getItem("isAdmin")=="true");
+    this.idClient=Number(localStorage.getItem("id"));
+    if(this.isAdmin){
         this.histoTransactionService.getHistoTransactions().subscribe({
             next: (res) => {
                 this.histoTransactions = res;
+                console.log(res);
             },
             error: (err) => {
                 console.log(err);
                 this.histoTransactions = [];
             }
         });
+    }else{
+        this.histoTransactionService.getHistoTransactionsByClient(this.idClient).subscribe({
+            next: (res) => {
+                this.histoTransactions = res;
+                console.log(res);
+            },
+            error: (err) => {
+                console.log(err);
+                this.histoTransactions = [];
+            }
+        });
+    }
 
         this.cols = [
             { field: 'id', header: 'id' },
@@ -123,7 +142,7 @@ export class HistoTransactionComponent {
     findClientById(id: number): number {
         let index = -1;
         for (let i = 0; i < this.histoTransactions.length; i++) {
-            if (this.histoTransactions[i].id === id) {
+            if (this.histoTransactions[i].id == id) {
                 index = i;
                 break;
             }
